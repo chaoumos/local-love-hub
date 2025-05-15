@@ -1,0 +1,29 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const posts = await Astro.glob("../../content/blog/**/*.md");
+---
+
+<Layout title="Blog" description="A collection of articles about local businesses and community events.">
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-primary mb-6">Blog</h1>
+    <ul class="space-y-4">
+      {posts.map((post) => (
+        <li class="bg-white rounded-lg shadow-md p-4">
+          <a href={post.url} class="block hover:bg-gray-100 transition-colors">
+            <h2 class="text-xl font-semibold text-secondary mb-2">{post.frontmatter.title}</h2>
+            <time datetime={post.frontmatter.pubDate} class="text-gray-500 mb-2">
+              {new Date(post.frontmatter.pubDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+            <p class="text-gray-700">{post.frontmatter.description}</p>
+            <img src={post.frontmatter.heroImage || 'https://placehold.co/600x300.png'} alt={post.frontmatter.heroImageAlt || 'Placeholder image'} class="rounded-lg shadow-md mt-2" data-ai-hint="{post.frontmatter.heroImageAlt || 'generic'}"/>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+</Layout>
